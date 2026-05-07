@@ -1,5 +1,5 @@
 "use client";
-
+import { supabase } from "@/lib/supabase";
 import { useState } from "react";
 import { useRouter } from "next/navigation";
 import { motion, AnimatePresence } from "framer-motion";
@@ -46,11 +46,37 @@ export default function AuditPage() {
 const handleFinalize = async () => {
   setLoading(true);
 
-  await new Promise(resolve => setTimeout(resolve, 2000));
+  try {
+    const {
+      data: { user },
+    } = await supabase.auth.getUser();
 
-  setLoading(false);
+    if (!user) {
+      alert("User not logged in");
+      return;
+    }
 
-  router.push("/results");
+    const { error } = await supabase.from("audits").insert({
+      user_id: user.id,
+      company_name: data.companyName,
+      team_size: data.teamSize,
+      monthly_spend: data.monthlySpend,
+      tools: data.tools,
+    });
+
+    if (error) {
+      console.log(error.message);
+      alert("Failed to save audit");
+      return;
+    }
+
+    router.push("/results");
+
+  } catch (error) {
+    console.log(error);
+  } finally {
+    setLoading(false);
+  }
 };
 
   const isStepValid = () => {
