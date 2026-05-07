@@ -1,5 +1,27 @@
+
+"use client";
 import Link from "next/link";
+import { useEffect, useState } from "react";
+import { supabase } from "@/lib/supabase";
 export default function DashboardPage() {
+    const [audits, setAudits] = useState<any[]>([]);
+    useEffect(() => {
+  fetchAudits();
+}, []);
+
+const fetchAudits = async () => {
+  const { data, error } = await supabase
+    .from("audits")
+    .select("*")
+    .order("created_at", { ascending: false });
+
+  if (error) {
+    console.log(error.message);
+    return;
+  }
+
+  setAudits(data || []);
+};
   return (
     <div className="min-h-screen bg-black text-white p-8">
       <div className="mx-auto max-w-6xl">
@@ -55,41 +77,36 @@ export default function DashboardPage() {
             Recent Audits
           </h2>
 
-          <div className="mt-6 space-y-4">
-            
-            <div className="flex items-center justify-between rounded-lg border border-zinc-800 p-4">
-              <div>
-                <h3 className="font-semibold">
-                  Startup SaaS Stack
-                </h3>
+<div className="mt-6 space-y-4">
 
-                <p className="text-sm text-zinc-400">
-                  Estimated Savings: $2400/year
-                </p>
-              </div>
+  {audits.length === 0 ? (
+    <p className="text-zinc-500">
+      No audits found yet.
+    </p>
+  ) : (
+    audits.map((audit) => (
+      <div
+        key={audit.id}
+        className="flex items-center justify-between rounded-lg border border-zinc-800 p-4"
+      >
+        <div>
+          <h3 className="font-semibold">
+            {audit.company_name}
+          </h3>
 
-              <span className="rounded-full bg-red-500/20 px-3 py-1 text-sm text-red-400">
-                Medium Waste
-              </span>
-            </div>
+          <p className="text-sm text-zinc-400">
+            Monthly Spend: ${audit.monthly_spend}
+          </p>
+        </div>
 
-            <div className="flex items-center justify-between rounded-lg border border-zinc-800 p-4">
-              <div>
-                <h3 className="font-semibold">
-                  Marketing Team Stack
-                </h3>
+        <span className="rounded-full bg-green-500/20 px-3 py-1 text-sm text-green-400">
+          Active
+        </span>
+      </div>
+    ))
+  )}
 
-                <p className="text-sm text-zinc-400">
-                  Estimated Savings: $1800/year
-                </p>
-              </div>
-
-              <span className="rounded-full bg-yellow-500/20 px-3 py-1 text-sm text-yellow-400">
-                High Waste
-              </span>
-            </div>
-
-          </div>
+</div>
         </div>
 
       </div>
