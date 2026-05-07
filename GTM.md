@@ -1,0 +1,89 @@
+# GTM.md — StackSpend AI Go-To-Market
+
+## Target Customer
+
+### Primary: Finance Ops / Operations Leads at Startups (20–200 people)
+- Title: Head of Finance, Finance Ops Manager, COO, Office Manager
+- Pain: Paying for tools no one uses, no central view of SaaS spend
+- Trigger: Year-end budget review, new CFO, cost-cutting initiative
+- Budget authority: Yes or adjacent to decision-maker
+
+### Secondary: Founders of Solo/Small Startups
+- Title: Founder, CEO, CTO
+- Pain: Spending money on forgotten subscriptions
+- Trigger: Monthly burn anxiety, investor pressure on costs
+- Budget authority: Full
+
+### Not Yet: Enterprise (500+ employees)
+- Already have Zylo, Torii, or Cleanshelf
+- Sales cycles too long for MVP stage
+
+---
+
+## Positioning
+
+**Tagline:** "Find out exactly where your SaaS budget is being wasted — in 5 minutes."
+
+**Against alternatives:**
+| Alternative | Their Problem | Our Angle |
+|---|---|---|
+| Spreadsheet audit | Manual, never updated | Automated, AI-powered |
+| Zylo / Torii | Enterprise pricing, complex setup | Simple, affordable, instant |
+| Doing nothing | Invisible waste | "$X in savings identified today" |
+
+---
+
+## Launch Strategy
+
+### Phase 1 — Soft Launch (Week 1–2)
+- [ ] Deploy to Vercel, confirm auth + audit flow works end-to-end
+- [ ] Share with 5–10 friends/peers, gather feedback
+- [ ] Post in personal Twitter/X: "Built this in 2 days, tell me what you think"
+- [ ] Post on Indie Hackers "What are you working on?" thread
+
+### Phase 2 — Community Launch (Week 3–4)
+- [ ] Product Hunt launch (Tuesday–Thursday, 12am PST)
+- [ ] Post in relevant Slack communities: Finance Ops communities, Founder Slack groups
+- [ ] LinkedIn post targeting Finance/Ops audience
+- [ ] Write a quick blog post: "How I audited my SaaS stack and saved $800/month"
+
+### Phase 3 — SEO + Content (Month 2+)
+- [ ] Target keywords: "SaaS spend audit", "SaaS cost optimization", "reduce software costs"
+- [ ] Write 3–5 comparison posts: "StackSpend vs Zylo", "Best SaaS audit tools 2026"
+- [ ] Build a free "SaaS Waste Calculator" as a lead magnet
+
+---
+
+## Messaging by Channel
+
+### Twitter/X
+"Most startups are wasting 30–40% of their SaaS budget. Built a tool to find exactly where — takes 5 minutes. Try it free → [link]"
+
+### LinkedIn (Finance Ops audience)
+"Just audited a 50-person startup's SaaS stack. Found $3,200/month in unused licenses and redundant tools. Here's what they were paying for that nobody was using... [thread or article]"
+
+### Product Hunt tagline
+"Find and eliminate wasted SaaS spend in 5 minutes"
+
+### Cold Email (Finance leads)
+Subject: "Quick question about your SaaS stack"
+Body: 3 sentences, lead with the waste stat, one CTA to try the free audit
+
+---
+
+## Success Metrics for GTM
+
+| Metric | Week 2 Target | Month 1 Target |
+|---|---|---|
+| Signups | 25 | 200 |
+| Audits completed | 10 | 100 |
+| Paying customers | 0 | 5 |
+| NPS / qualitative feedback | 3 responses | 15 responses |
+
+---
+
+## Key GTM Risks
+
+- **Traffic without conversion** — landing copy must clearly explain the value before signup
+- **Audit abandonment** — wizard too long or asks for data users don't have
+- **Perceived trust gap** — users nervous about sharing SaaS tool data; need clear privacy framing
