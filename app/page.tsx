@@ -1,3 +1,5 @@
+import Link from "next/link";
+
 import { Button } from "@/components/ui/button";
 import { Card, CardContent } from "@/components/ui/card";
 import {
@@ -16,7 +18,9 @@ export default function Home() {
             StackSpend AI
           </h1>
 
-          <Button>Audit My Stack</Button>
+          <Link href="/login">
+            <Button>Audit My Stack</Button>
+          </Link>
         </div>
       </nav>
 
@@ -38,11 +42,15 @@ export default function Home() {
           </p>
 
           <div className="mt-10 flex items-center justify-center gap-4">
-            <Button size="lg">Audit My Stack</Button>
+            <Link href="/login">
+              <Button size="lg">Audit My Stack</Button>
+            </Link>
 
-            <Button variant="outline" size="lg">
-              Learn More
-            </Button>
+            <Link href="/audit">
+              <Button variant="outline" size="lg">
+                Learn More
+              </Button>
+            </Link>
           </div>
         </div>
       </section>

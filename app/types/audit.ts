@@ -1,14 +1,19 @@
-export interface ToolInput {
+export interface AuditInput {
   tool: string;
   plan: string;
-  seats: number;
   monthlySpend: number;
+  seats: number;
+  useCase: string;
 }
 
 export interface AuditResult {
   tool: string;
-  currentSpend: number;
+  currentPlan: string;
   recommendedPlan: string;
-  estimatedSavings: number;
-  reason: string;
+  currentSpend: number;
+  optimizedSpend: number;
+  monthlySavings: number;
+  annualSavings: number;
+  reasoning: string;
+  wasteScore: number;
 }
