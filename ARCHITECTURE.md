@@ -125,3 +125,78 @@ NEXT_PUBLIC_SUPABASE_ANON_KEY=
 - [ ] AI recommendation endpoint (Claude API or OpenAI)
 - [ ] Protected route middleware (`middleware.ts`)
 - [ ] Audit versioning (allow re-audits over time)
+
+---
+
+## Audit Engine Architecture
+
+The core recommendation system uses deterministic business rules instead of fully AI-generated pricing decisions. This approach was chosen to ensure predictable, explainable, and financially consistent optimization outputs.
+
+The audit engine evaluates:
+- Selected AI tool
+- Current subscription plan
+- Team size
+- Monthly spend
+- Primary workflow/use case
+
+Based on these inputs, the engine:
+1. Compares pricing tiers
+2. Evaluates plan suitability
+3. Detects overspending scenarios
+4. Calculates optimized spend
+5. Estimates monthly & annual savings
+6. Generates waste scores and recommendations
+
+### Example Rule
+
+```ts
+if (tool === "chatgpt" && seats <= 2 && plan === "team") {
+  recommend("plus")
+}
+
+
+
+
+
+
+## Testing Strategy
+
+The platform includes automated unit tests focused on the audit recommendation engine. Jest and TypeScript are used to validate pricing optimization logic, recommendation generation, savings calculations, and edge-case scenarios.
+
+Current test coverage includes:
+- Plan downgrade recommendations
+- Cross-tool optimization suggestions
+- Annual savings calculations
+- Waste score validation
+- Organization-wide spend aggregation
+
+The testing layer helps ensure deterministic and financially believable audit outputs as recommendation logic expands.
+
+---
+
+## Dynamic Results Routing
+
+Audit reports use dynamic App Router segments:
+
+```txt
+/results/[id]
+
+
+
+
+
+
+
+## Security Considerations
+
+Several security practices were considered during architecture planning:
+
+- Supabase authentication for secure session handling
+- Planned Row Level Security (RLS) policies
+- Protected dashboard routes
+- Environment variable isolation
+- Separation of client/server Supabase instances
+- Input validation across audit forms
+- Future rate-limiting for AI endpoints
+
+Sensitive API keys are excluded from the repository using environment variables and `.gitignore`.

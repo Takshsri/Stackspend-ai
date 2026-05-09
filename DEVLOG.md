@@ -44,3 +44,34 @@ Still exploring the best approach for generating intelligent SaaS optimization r
 
 **Plan for tomorrow:**  
 Add dynamic recommendation logic and smarter SaaS optimization insights, improve analytics visualization, implement protected routes for authenticated users, refine dashboard UX.
+
+# DEVLOG
+
+## Day 3 — 2026-05-08
+
+**Hours worked:** 6
+
+**What I did:**  
+Enhanced the dashboard experience by adding more dynamic analytics cards, improved audit history rendering, and cleaner SaaS-style UI interactions. Refined the audit workflow and connected the audit engine directly with the results page to generate dynamic optimization reports based on user inputs.
+
+Implemented a rule-based audit recommendation engine capable of analyzing AI tool plans, team size, usage patterns, and monthly spending to calculate optimized plans, monthly savings, annual savings, and waste scores. Added support for multiple AI tools including ChatGPT, Gemini, Claude, Cursor, Windsurf, and GitHub Copilot pricing logic.
+
+Converted the results page into a fully dynamic route using the Next.js App Router (`/results/[id]`) to simulate shareable public audit reports. Added audit report sharing functionality and created reusable result cards for recommendations, savings analysis, and AI-generated optimization summaries.
+
+Added automated testing setup using Jest and TypeScript. Created audit-engine unit tests to validate recommendation logic, savings calculations, optimization flows, and edge-case scenarios. Configured Jest type definitions, scripts, and testing environment for scalable future coverage.
+
+Improved overall UI polish across the dashboard, audit flow, and results pages by refining layouts, spacing, typography, loading behavior, and transitions to make the platform feel closer to a production-grade SaaS application.
+
+**What I learned:**  
+Learned how to build deterministic business-rule systems for pricing optimization instead of relying entirely on AI-generated recommendations. Explored dynamic routing and parameter-based rendering in the Next.js App Router and understood how public shareable report systems are structured in SaaS products.
+
+Also learned how automated testing improves confidence in recommendation engines and how to configure Jest with TypeScript in a modern Next.js project structure.
+
+**Blockers / what I'm stuck on:**  
+Spent time debugging TypeScript issues related to Jest test environments, dynamic route typing, and audit-engine return types. Still refining the recommendation logic to balance realistic SaaS pricing assumptions with understandable optimization outputs.
+
+Need to further improve how multiple AI tools are aggregated into a single organization-wide optimization report.
+
+**Plan for tomorrow:**  
+Implement protected routes and session persistence, improve charts and spend visualization, add AI-generated summaries using external APIs, finalize documentation files, and prepare the platform for deployment and final polish.
+

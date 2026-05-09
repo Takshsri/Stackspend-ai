@@ -100,3 +100,54 @@ Getting to ramen profitable: **5–7 Starter customers**
 - **Churn if insights feel generic** — AI quality must be high enough to feel personalised
 - **Competition from Notion/spreadsheet DIY** — compete on speed and automation
 - **Supabase/Vercel cost creep** — monitor at 1000+ audits/month
+
+
+---
+
+## Expansion Revenue Opportunities
+
+Beyond subscription revenue, StackSpend AI could expand monetization through:
+
+### Enterprise Procurement Audits
+Custom consulting-style audits for larger organizations with complex SaaS environments.
+
+### Affiliate / Referral Revenue
+Referral partnerships with SaaS vendors offering discounted migration paths or optimized plans.
+
+### Benchmarking Reports
+Industry-level SaaS spending benchmarks sold as premium reports for startups and finance teams.
+
+### Team Collaboration Add-ons
+Additional seats, admin controls, and approval workflows for larger organizations.
+
+### API Access
+Expose audit and optimization endpoints for integration into finance dashboards or procurement platforms.
+
+
+---
+
+## Long-Term Defensibility
+
+The long-term moat for StackSpend AI would come from:
+- Historical SaaS spend datasets
+- Optimization benchmarking across companies
+- AI recommendation quality improvements over time
+- Workflow integrations into finance operations
+- Shareable audit reports creating organic distribution
+
+As more audit data is collected, recommendation quality and pricing intelligence become harder for competitors to replicate quickly.
+
+
+---
+
+## Key Economic Assumptions
+
+Several assumptions influence these projections:
+
+- AI API costs remain relatively low per audit
+- Users perceive identified savings as significantly higher than subscription cost
+- Most early users come from organic distribution rather than paid acquisition
+- Churn decreases as integrations and automation improve
+- SMB customers prioritize simplicity over enterprise procurement complexity
+
+These assumptions may change as real customer behavior and retention data become available.

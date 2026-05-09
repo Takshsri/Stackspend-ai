@@ -1,4 +1,43 @@
 # METRICS.md — StackSpend AI
+---
+
+## What Success Looks Like
+
+The early success of StackSpend AI is not defined purely by traffic, but by whether users:
+- complete audits,
+- trust the recommendations,
+- identify meaningful savings,
+- and return to monitor spend over time.
+
+A successful product experience should create an immediate:
+> “I didn’t realize we were overspending this much.”
+
+moment for users.
+
+
+---
+
+## Leading vs Lagging Metrics
+
+### Leading Indicators
+Metrics that suggest future growth:
+- Audit completion rate
+- Time to first audit
+- Share link usage
+- Return visits
+- Recommendation engagement
+
+### Lagging Indicators
+Metrics that measure long-term business success:
+- MRR
+- Paid conversions
+- Retention
+- Churn
+- LTV
+
+The focus during MVP stage is improving leading indicators before aggressively optimizing monetization.
+
+
 
 ## North Star Metric
 
@@ -73,6 +112,23 @@ This single metric captures product value delivery, user engagement, and growth 
 | Support requests / complaints | Auth issues, broken flows | Manual log |
 
 ---
+---
+
+## Product-Led Growth Signals
+
+Several metrics are designed to measure organic product-driven distribution:
+
+| Metric | Why It Matters |
+|---|---|
+| Share link copies | Indicates users find reports valuable |
+| Public audit page visits | Measures virality potential |
+| Referral signups | Tracks organic acquisition |
+| Repeat audits | Signals recurring operational value |
+
+The goal is for audit reports themselves to become shareable growth assets that naturally attract new users.
+
+
+
 
 ## Tracking Plan
 

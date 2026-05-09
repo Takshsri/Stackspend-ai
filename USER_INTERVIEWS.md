@@ -124,3 +124,106 @@ Interview findings will influence:
 - SaaS waste scoring
 - Dashboard analytics
 - Future AI budgeting features
+
+
+
+
+---
+
+# Sample Interview Insights
+
+## Interview 1 — Solo Founder (AI SaaS Builder)
+
+### Profile
+- Team Size: 1
+- Monthly AI Spend: ~$85
+- Tools Used:
+  - ChatGPT Plus
+  - Claude Pro
+  - Cursor Pro
+
+### Key Pain Points
+- Unsure whether paying for multiple writing-focused AI tools is necessary
+- Frequently forgets which subscriptions are active
+- No centralized place to compare AI tool ROI
+
+### Notable Quote
+> "I know I’m probably overpaying, but I don’t have time to constantly compare plans."
+
+### Opportunity Identified
+Users want simple recommendations rather than complex financial dashboards.
+
+---
+
+## Interview 2 — Small Startup Engineering Team
+
+### Profile
+- Team Size: 6
+- Monthly AI Spend: ~$420
+- Tools Used:
+  - Cursor Business
+  - GitHub Copilot
+  - ChatGPT Team
+
+### Key Pain Points
+- Duplicate tooling across developers
+- Unclear differences between enterprise vs team tiers
+- Hard to justify renewals during budget reviews
+
+### Notable Quote
+> "We added tools gradually, but now nobody knows what we actually need."
+
+### Opportunity Identified
+Teams need visibility into overlapping subscriptions and seat inefficiencies.
+
+---
+
+## Interview 3 — Student Builder / Indie Hacker
+
+### Profile
+- Team Size: 1
+- Monthly AI Spend: ~$40
+- Tools Used:
+  - Gemini Advanced
+  - ChatGPT Plus
+
+### Key Pain Points
+- Subscription fatigue from constantly changing AI pricing
+- Difficulty understanding which model is best for specific workflows
+
+### Notable Quote
+> "Every AI company keeps releasing new plans and I can’t tell what’s actually worth paying for anymore."
+
+### Opportunity Identified
+Users want pricing clarity and workflow-specific recommendations.
+
+
+
+---
+
+# Key Research Themes
+
+Across interviews, several patterns consistently appeared:
+
+## 1. AI Subscription Sprawl
+Many users subscribe to multiple overlapping AI tools without clearly understanding usage overlap or cost efficiency.
+
+## 2. Low Visibility Into Spend
+Most participants do not actively track AI subscription costs month-to-month.
+
+## 3. Pricing Confusion
+Users struggle to understand differences between:
+- Pro vs Team plans
+- Business vs Enterprise tiers
+- Model limitations and usage caps
+
+## 4. ROI Uncertainty
+Even satisfied users are often unsure whether premium subscriptions justify their monthly cost.
+
+## 5. Desire for Simplicity
+Participants preferred:
+- actionable recommendations
+- fast audits
+- savings visibility
+
+over complex procurement-style dashboards.
