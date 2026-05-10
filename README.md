@@ -122,6 +122,3 @@ The project will be deployed using Vercel.
 
 ---
 
-# Status
-
-Currently under active development as part of the Credex Web Development Internship Assignment.
