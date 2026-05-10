@@ -75,3 +75,36 @@ Need to further improve how multiple AI tools are aggregated into a single organ
 **Plan for tomorrow:**  
 Implement protected routes and session persistence, improve charts and spend visualization, add AI-generated summaries using external APIs, finalize documentation files, and prepare the platform for deployment and final polish.
 
+
+## Day 4 — 2026-05-10
+
+**Hours worked:** 8
+
+**What I did:**
+Implemented route protection with Next.js middleware and Supabase session checking.
+Fixed a redirect loop caused by localStorage vs cookie session mismatch between
+@supabase/supabase-js and @supabase/ssr — resolved by switching to a client-side
+useAuthGuard hook. Fixed login redirect logic (login → /dashboard, signup → /audit)
+and resolved the useSearchParams TypeScript error.
+
+Fixed dashboard card visibility — Tailwind v4 zinc utility classes weren't generating
+in the custom @theme config, replaced with explicit bg-zinc-950/900/border-zinc-800
+classes. Rebuilt audit list from 2-column grid to vertical list so all cards are
+visible. Fixed share button null crash when share_id was missing on old rows, added
+clipboard fallback for HTTP. Added load-more pagination with progress dots and
+back-to-top button. Enhanced home page with animated counters, tool ticker, and
+feature cards.
+
+**What I learned:**
+Supabase localStorage sessions are invisible to server-side middleware — client-side
+auth guards are the faster fix. Tailwind v4 custom themes don't auto-generate zinc
+utilities — always use explicit classes matching other pages.
+
+**Blockers / what I'm stuck on:**
+Flash of protected page before useAuthGuard redirects. Proper fix needs @supabase/ssr
+browser client migration.
+
+**Plan for tomorrow:**
+Build /api/summary Anthropic API route, shareable /audit/[id] public page, Open Graph
+tags, complete GTM.md/ECONOMICS.md/LANDING_COPY.md/METRICS.md, deploy to Vercel,
+run Lighthouse audit.
