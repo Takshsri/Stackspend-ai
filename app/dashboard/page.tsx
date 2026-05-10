@@ -6,8 +6,8 @@ import { motion, AnimatePresence } from "framer-motion";
 import { supabase } from "@/lib/supabase";
 import {
   PieChart, Plus, TrendingDown, ArrowRight, Loader2,
-  Share2, Check, BadgeDollarSign, Clock, BarChart3,
-  AlertTriangle, CheckCircle2, ChevronDown, ChevronUp,
+  Share2, Check, BadgeDollarSign, BarChart3,
+  CheckCircle2, ChevronDown, ChevronUp,
 } from "lucide-react";
 import type { FullAuditResult } from "@/app/services/audit-engine";
 
@@ -15,7 +15,7 @@ import type { FullAuditResult } from "@/app/services/audit-engine";
 
 type AuditRow = {
   id: string;
-  share_id: string;
+  share_id: string | null;
   company_name: string;
   team_size: string;
   audit_result: FullAuditResult;
@@ -39,151 +39,45 @@ function timeAgo(dateStr: string) {
   return `${Math.floor(hrs / 24)}d ago`;
 }
 
-function wasteColor(score: number) {
-  if (score >= 60) return "#dc2626";
-  if (score >= 30) return "#d97706";
-  return "#16a34a";
+function wasteTextColor(score: number) {
+  if (score >= 60) return "text-red-400";
+  if (score >= 30) return "text-yellow-400";
+  return "text-green-400";
 }
 
-function wasteBg(score: number) {
-  if (score >= 60) return "#ef4444";
-  if (score >= 30) return "#f59e0b";
-  return "#22c55e";
+function wasteBgColor(score: number) {
+  if (score >= 60) return "bg-red-500";
+  if (score >= 30) return "bg-yellow-500";
+  return "bg-green-500";
 }
-
-// ─── STYLES (works in light AND dark mode) ────────────────────────────────────
-// We avoid CSS variables for backgrounds since --card == white in light mode.
-// Instead use explicit colors that are always visible.
-
-const S = {
-  page: {
-    minHeight: "100vh",
-    background: "var(--background)",
-    color: "var(--foreground)",
-  } as React.CSSProperties,
-
-  // Dark mode override applied via className="dark" on html element
-  card: {
-    background: "var(--card)",
-    border: "1px solid var(--border)",
-    borderRadius: 16,
-    overflow: "hidden",
-  } as React.CSSProperties,
-
-  cardHover: {
-    border: "2px solid #a1a1aa",
-  } as React.CSSProperties,
-
-cardHeader: {
-  padding: "16px 20px",
-  borderBottom: "1px solid var(--border)",
-  display: "flex",
-  alignItems: "center",
-  justifyContent: "space-between",
-  gap: 12,
-  flexWrap: "wrap" as const,
-  background: "var(--muted)",
-} as React.CSSProperties,
-
-  cardBody: {
-  padding: "16px 20px",
-  display: "flex",
-  gap: 16,
-  flexWrap: "wrap" as const,
-  alignItems: "center",
-  background: "var(--card)",
-} as React.CSSProperties,
-
-  pill: {
-  background: "var(--muted)",
-  borderRadius: 12,
-  padding: "10px 14px",
-  minWidth: 80,
-  textAlign: "center" as const,
-  border: "1px solid var(--border)",
-} as React.CSSProperties,
-
-  pillLabel: {
-    fontSize: 11,
-    color: "#71717a",
-    marginBottom: 4,
-  } as React.CSSProperties,
-
-  metaText: {
-    fontSize: 12,
-    color: "#71717a",
-  } as React.CSSProperties,
-
-  sectionTitle: {
-  fontSize: 17,
-  fontWeight: 700,
-  color: "var(--foreground)",
-  display: "flex",
-  alignItems: "center",
-  gap: 8,
-  margin: 0,
-} as React.CSSProperties,
-
-  statCard: {
-  background: "var(--card)",
-  border: "1px solid var(--border)",
-  borderRadius: 16,
-  padding: "20px 24px",
-} as React.CSSProperties,
-
-  btn: {
-    display: "flex",
-    alignItems: "center",
-    gap: 6,
-    padding: "10px 20px",
-    borderRadius: 99,
-    border: "none",
-    background: "#18181b",
-    color: "#ffffff",
-    fontWeight: 600,
-    fontSize: 14,
-    cursor: "pointer",
-  } as React.CSSProperties,
-
-  btnOutline: {
-    display: "flex",
-    alignItems: "center",
-    gap: 6,
-    padding: "8px 18px",
-    borderRadius: 99,
-    border: "2px solid #d4d4d8",
-    background: "transparent",
-    color: "#52525b",
-    fontSize: 13,
-    cursor: "pointer",
-  } as React.CSSProperties,
-};
 
 // ─── AUDIT CARD ───────────────────────────────────────────────────────────────
 
 function AuditCard({
-  audit, onShare, copiedId, index, newRef,
+  audit,
+  onShare,
+  copiedId,
+  index,
+  newRef,
 }: {
   audit: AuditRow;
-  onShare: (id: string) => void;
+  // accepts share_id (possibly null) + fallback audit.id
+  onShare: (shareId: string | null, auditId: string) => void;
   copiedId: string | null;
   index: number;
   newRef?: React.Ref<HTMLDivElement>;
 }) {
-  const [hovered, setHovered] = useState(false);
   const result = audit.audit_result;
   if (!result) return null;
 
   const avgWaste = Math.round(
-    result.results.reduce((s, r) => s + r.wasteScore, 0) / (result.results.length || 1)
+    result.results.reduce((s, r) => s + r.wasteScore, 0) /
+      (result.results.length || 1)
   );
   const isOptimal = result.totalMonthlySavings === 0;
 
-  const badgeStyle: React.CSSProperties = isOptimal
-    ? { background: "#dcfce7", color: "#16a34a", border: "1px solid #bbf7d0" }
-    : result.totalMonthlySavings > 500
-    ? { background: "#fee2e2", color: "#dc2626", border: "1px solid #fecaca" }
-    : { background: "#fef9c3", color: "#d97706", border: "1px solid #fde68a" };
+  // Use share_id if available, otherwise fall back to audit.id
+  const cardId = audit.share_id ?? audit.id;
 
   return (
     <motion.div
@@ -191,106 +85,113 @@ function AuditCard({
       initial={{ opacity: 0, y: 16 }}
       animate={{ opacity: 1, y: 0 }}
       transition={{ delay: index * 0.06 }}
-      style={{ ...S.card, ...(hovered ? S.cardHover : {}) }}
-      onMouseEnter={() => setHovered(true)}
-      onMouseLeave={() => setHovered(false)}
+      className="rounded-2xl border border-zinc-800 bg-zinc-900 overflow-hidden hover:border-zinc-700 transition-colors"
     >
       {/* ── HEADER ── */}
-      <div style={S.cardHeader}>
-        <div style={{ display: "flex", alignItems: "center", gap: 10, flexWrap: "wrap", flex: 1, minWidth: 0 }}>
-          <span style={{ ...S.metaText, fontFamily: "monospace", color: "#a1a1aa" }}>#{index + 1}</span>
-          <span style={{ fontWeight: 700, fontSize: 15, color: "#18181b" }}>
+      <div className="flex items-center justify-between gap-3 px-5 py-4 border-b border-zinc-800 flex-wrap">
+        <div className="flex items-center gap-2 flex-wrap flex-1 min-w-0">
+          <span className="text-zinc-600 font-mono text-xs">#{index + 1}</span>
+
+          <span className="text-white font-semibold text-sm truncate">
             {audit.company_name || "Unnamed Audit"}
           </span>
-          <span style={{
-            ...badgeStyle,
-            padding: "3px 10px",
-            borderRadius: 99,
-            fontSize: 12,
-            fontWeight: 600,
-            whiteSpace: "nowrap",
-          }}>
-            {isOptimal ? "Optimized ✓" : `Save $${fmt(result.totalMonthlySavings)}/mo`}
+
+          {/* Savings badge */}
+          <span className={`text-xs px-2 py-0.5 rounded-full font-semibold shrink-0 ${
+            isOptimal
+              ? "bg-green-500/20 text-green-400"
+              : result.totalMonthlySavings > 500
+              ? "bg-red-500/20 text-red-400"
+              : "bg-yellow-500/20 text-yellow-400"
+          }`}>
+            {isOptimal
+              ? "Optimized ✓"
+              : `Save $${fmt(result.totalMonthlySavings)}/mo`}
           </span>
-          <div style={{ display: "flex", gap: 10, ...S.metaText }}>
-            <span>🕐 {timeAgo(audit.created_at)}</span>
+
+          <div className="flex items-center gap-2 text-zinc-500 text-xs">
+            <span>{timeAgo(audit.created_at)}</span>
+            <span>·</span>
             <span>{result.results.length} tool{result.results.length !== 1 ? "s" : ""}</span>
+            <span>·</span>
             <span>{audit.team_size}</span>
           </div>
         </div>
+
+        {/* Share button — fixed: passes both shareId and auditId */}
         <button
-          onClick={() => onShare(audit.share_id)}
-          style={{ background: "none", border: "none", cursor: "pointer", color: "#a1a1aa", padding: 4 }}
+          onClick={() => onShare(audit.share_id, audit.id)}
+          className="text-zinc-600 hover:text-zinc-300 transition-colors p-1 shrink-0"
           title="Copy share link"
         >
-          {copiedId === audit.share_id
-            ? <Check size={14} color="#16a34a" />
+          {copiedId === cardId
+            ? <Check size={14} className="text-green-400" />
             : <Share2 size={14} />}
         </button>
       </div>
 
       {/* ── BODY ── */}
-      <div style={S.cardBody}>
+      <div className="flex items-center gap-4 px-5 py-4 flex-wrap">
 
         {/* Metric pills */}
-        <div style={{ display: "flex", gap: 8, flexShrink: 0 }}>
-          <div style={S.pill}>
-            <div style={S.pillLabel}>Monthly</div>
-            <div style={{ fontSize: 16, fontWeight: 700, color: "#16a34a" }}>
+        <div className="flex gap-2 shrink-0">
+          <div className="bg-zinc-800 border border-zinc-700 rounded-xl px-3 py-2 text-center min-w-[72px]">
+            <div className="text-zinc-500 text-xs mb-1">Monthly</div>
+            <div className="text-green-400 font-bold text-sm">
               ${fmt(result.totalMonthlySavings)}
             </div>
           </div>
-          <div style={S.pill}>
-            <div style={S.pillLabel}>Annual</div>
-            <div style={{ fontSize: 16, fontWeight: 700, color: "#18181b" }}>
+          <div className="bg-zinc-800 border border-zinc-700 rounded-xl px-3 py-2 text-center min-w-[72px]">
+            <div className="text-zinc-500 text-xs mb-1">Annual</div>
+            <div className="text-white font-bold text-sm">
               ${fmt(result.totalAnnualSavings)}
             </div>
           </div>
-          <div style={S.pill}>
-            <div style={S.pillLabel}>Waste</div>
-            <div style={{ fontSize: 16, fontWeight: 700, color: wasteColor(avgWaste) }}>
+          <div className="bg-zinc-800 border border-zinc-700 rounded-xl px-3 py-2 text-center min-w-[72px]">
+            <div className="text-zinc-500 text-xs mb-1">Waste</div>
+            <div className={`font-bold text-sm ${wasteTextColor(avgWaste)}`}>
               {avgWaste}%
             </div>
           </div>
         </div>
 
-        {/* Tool bars */}
-        <div style={{ flex: 1, minWidth: 160, display: "flex", flexDirection: "column", gap: 7 }}>
+        {/* Tool spend bars */}
+        <div className="flex-1 min-w-[160px] flex flex-col gap-1.5">
           {result.results.slice(0, 3).map((r) => (
-            <div key={r.toolId} style={{ display: "flex", alignItems: "center", gap: 8 }}>
-              <span style={{ ...S.metaText, width: 90, overflow: "hidden", textOverflow: "ellipsis", whiteSpace: "nowrap", flexShrink: 0 }}>
+            <div key={r.toolId} className="flex items-center gap-2">
+              <span className="text-zinc-400 text-xs w-24 truncate shrink-0">
                 {r.toolName}
               </span>
-              <div style={{ flex: 1, height: 6, background: "#e4e4e7", borderRadius: 99, overflow: "hidden" }}>
-                <div style={{ width: `${Math.max(4, r.wasteScore)}%`, height: "100%", background: wasteBg(r.wasteScore), borderRadius: 99 }} />
+              <div className="flex-1 h-1.5 bg-zinc-800 rounded-full overflow-hidden">
+                <div
+                  className={`h-1.5 rounded-full ${wasteBgColor(r.wasteScore)}`}
+                  style={{ width: `${Math.max(4, r.wasteScore)}%` }}
+                />
               </div>
-              <span style={{ ...S.metaText, width: 58, textAlign: "right", flexShrink: 0 }}>
+              <span className="text-zinc-500 text-xs w-14 text-right shrink-0">
                 ${fmt(r.currentMonthlySpend)}/mo
               </span>
             </div>
           ))}
           {result.results.length > 3 && (
-            <span style={{ ...S.metaText }}>+{result.results.length - 3} more</span>
+            <span className="text-zinc-600 text-xs">
+              +{result.results.length - 3} more
+            </span>
           )}
         </div>
 
-        {/* View report */}
+        {/* View report link */}
         <Link
-          href={`/results?id=${audit.share_id}`}
+          href={`/results?id=${cardId}`}
           onClick={() => {
             sessionStorage.setItem("audit_result", JSON.stringify(result));
             sessionStorage.setItem("audit_company", audit.company_name ?? "");
-            sessionStorage.setItem("audit_share_id", audit.share_id);
+            sessionStorage.setItem("audit_share_id", cardId);
           }}
-          style={{
-            display: "flex", alignItems: "center", gap: 6,
-            padding: "9px 16px", borderRadius: 99,
-            border: "2px solid #d4d4d8", color: "#52525b",
-            fontSize: 13, fontWeight: 500, textDecoration: "none",
-            background: "#ffffff", whiteSpace: "nowrap", flexShrink: 0,
-          }}
+          className="flex items-center gap-1.5 px-4 py-2 rounded-full border border-zinc-700 text-zinc-400 hover:text-white hover:border-zinc-500 text-sm font-medium transition-all shrink-0 group"
         >
-          View report <ArrowRight size={13} />
+          View report
+          <ArrowRight size={13} className="group-hover:translate-x-0.5 transition-transform" />
         </Link>
       </div>
     </motion.div>
@@ -301,14 +202,20 @@ function AuditCard({
 
 function EmptyState() {
   return (
-    <div style={{ display: "flex", flexDirection: "column", alignItems: "center", padding: "80px 0", gap: 16, textAlign: "center" }}>
-      <div style={{ width: 64, height: 64, borderRadius: 16, border: "2px solid #e4e4e7", background: "#f4f4f5", display: "flex", alignItems: "center", justifyContent: "center" }}>
-        <BarChart3 size={28} color="#a1a1aa" />
+    <div className="flex flex-col items-center justify-center py-20 text-center gap-4">
+      <div className="w-16 h-16 rounded-2xl border border-zinc-800 bg-zinc-900 flex items-center justify-center">
+        <BarChart3 size={28} className="text-zinc-600" />
       </div>
-      <p style={{ fontWeight: 600, color: "#18181b", margin: 0 }}>No audits yet</p>
-      <p style={{ color: "#71717a", fontSize: 14, margin: 0 }}>Run your first AI spend audit to see savings opportunities.</p>
+      <div>
+        <p className="text-white font-semibold">No audits yet</p>
+        <p className="text-zinc-500 text-sm mt-1">
+          Run your first AI spend audit to see savings opportunities.
+        </p>
+      </div>
       <Link href="/audit">
-        <button style={{ ...S.btn, marginTop: 8 }}><Plus size={14} /> Start first audit</button>
+        <button className="flex items-center gap-2 bg-white text-black px-6 py-2.5 rounded-full font-semibold text-sm hover:bg-zinc-200 transition-all mt-2">
+          <Plus size={14} /> Start first audit
+        </button>
       </Link>
     </div>
   );
@@ -339,9 +246,16 @@ export default function DashboardPage() {
       .from("audits")
       .select("id, share_id, company_name, team_size, audit_result, created_at")
       .order("created_at", { ascending: false });
-    if (!error) setAllAudits((data as AuditRow[]) || []);
+
+    if (error) {
+      console.error("Supabase fetch error:", error.message);
+    } else {
+      setAllAudits((data as AuditRow[]) || []);
+    }
     setLoading(false);
   };
+
+  // ── Pagination ──────────────────────────────────────────────────────────────
 
   const visibleAudits = allAudits.slice(0, visibleCount);
   const hasMore = visibleCount < allAudits.length;
@@ -353,28 +267,64 @@ export default function DashboardPage() {
     await new Promise((r) => setTimeout(r, 300));
     setVisibleCount((p) => p + PAGE_SIZE);
     setLoadingMore(false);
-    setTimeout(() => newCardRef.current?.scrollIntoView({ behavior: "smooth", block: "start" }), 120);
+    setTimeout(
+      () => newCardRef.current?.scrollIntoView({ behavior: "smooth", block: "start" }),
+      120
+    );
   };
 
-  const handleShare = (shareId: string) => {
-    navigator.clipboard.writeText(`${window.location.origin}/audit/${shareId}`);
-    setCopiedId(shareId);
+  // ── Share — fixed: handles null share_id + clipboard fallback ──────────────
+
+  const handleShare = async (shareId: string | null, auditId: string) => {
+    const id = shareId ?? auditId; // fall back to audit.id if share_id is null
+    const url = `${window.location.origin}/audit/${id}`;
+
+    try {
+      await navigator.clipboard.writeText(url);
+    } catch {
+      // Fallback for HTTP or clipboard permission denied
+      const input = document.createElement("input");
+      input.value = url;
+      document.body.appendChild(input);
+      input.select();
+      document.execCommand("copy");
+      document.body.removeChild(input);
+    }
+
+    setCopiedId(id);
     setTimeout(() => setCopiedId(null), 2000);
   };
 
-  // Derived stats
-  const totalSavings = allAudits.reduce((s, a) => s + (a.audit_result?.totalMonthlySavings ?? 0), 0);
-  const totalAnnual = allAudits.reduce((s, a) => s + (a.audit_result?.totalAnnualSavings ?? 0), 0);
-  const avgWaste = allAudits.length > 0
-    ? Math.round(allAudits.reduce((s, a) => {
-        const rs = a.audit_result?.results ?? [];
-        return rs.length ? s + rs.reduce((x, r) => x + r.wasteScore, 0) / rs.length : s;
-      }, 0) / allAudits.length) : 0;
-  const highSavingsCount = allAudits.filter((a) => (a.audit_result?.totalMonthlySavings ?? 0) > 500).length;
-  const optimizedCount = allAudits.filter((a) => (a.audit_result?.totalMonthlySavings ?? 0) === 0).length;
+  // ── Derived stats (always from ALL audits) ──────────────────────────────────
+
+  const totalSavings = allAudits.reduce(
+    (s, a) => s + (a.audit_result?.totalMonthlySavings ?? 0), 0
+  );
+  const totalAnnual = allAudits.reduce(
+    (s, a) => s + (a.audit_result?.totalAnnualSavings ?? 0), 0
+  );
+  const avgWaste =
+    allAudits.length > 0
+      ? Math.round(
+          allAudits.reduce((s, a) => {
+            const rs = a.audit_result?.results ?? [];
+            return rs.length
+              ? s + rs.reduce((x, r) => x + r.wasteScore, 0) / rs.length
+              : s;
+          }, 0) / allAudits.length
+        )
+      : 0;
+  const highSavingsCount = allAudits.filter(
+    (a) => (a.audit_result?.totalMonthlySavings ?? 0) > 500
+  ).length;
+  const optimizedCount = allAudits.filter(
+    (a) => (a.audit_result?.totalMonthlySavings ?? 0) === 0
+  ).length;
+
+  // ─── RENDER ─────────────────────────────────────────────────────────────────
 
   return (
-    <div style={S.page}>
+    <div className="min-h-screen bg-zinc-950 text-zinc-300">
 
       {/* Floating back to top */}
       <AnimatePresence>
@@ -384,84 +334,105 @@ export default function DashboardPage() {
             animate={{ opacity: 1, scale: 1 }}
             exit={{ opacity: 0, scale: 0.8 }}
             onClick={() => window.scrollTo({ top: 0, behavior: "smooth" })}
-            style={{ ...S.btn, position: "fixed", bottom: 24, right: 24, zIndex: 50, boxShadow: "0 4px 20px rgba(0,0,0,0.15)" }}
+            className="fixed bottom-6 right-6 z-50 flex items-center gap-2 bg-white text-black px-4 py-2.5 rounded-full text-xs font-semibold shadow-lg hover:bg-zinc-200 transition-all"
           >
             <ChevronUp size={13} /> Top
           </motion.button>
         )}
       </AnimatePresence>
 
-      <div style={{ maxWidth: 860, margin: "0 auto", padding: "48px 24px", display: "flex", flexDirection: "column", gap: 28 }}>
+      <div className="max-w-4xl mx-auto px-6 py-12 flex flex-col gap-8">
 
         {/* ── HEADER ── */}
-        <div style={{ display: "flex", alignItems: "center", justifyContent: "space-between", flexWrap: "wrap", gap: 16 }}>
-          <div style={{ display: "flex", alignItems: "center", gap: 12 }}>
-            <div style={{ width: 42, height: 42, borderRadius: 12, background: "#18181b", display: "flex", alignItems: "center", justifyContent: "center" }}>
-              <PieChart size={20} color="white" />
+        <div className="flex items-center justify-between flex-wrap gap-4">
+          <div className="flex items-center gap-3">
+            <div className="w-10 h-10 rounded-xl bg-white flex items-center justify-center">
+              <PieChart size={20} className="text-black" />
             </div>
             <div>
-              <h1 style={{ fontWeight: 700, fontSize: 22, color: "#18181b", margin: 0 }}>StackAudit</h1>
-              <p style={{ color: "#71717a", fontSize: 13, margin: 0 }}>AI spend dashboard</p>
+              <h1 className="text-white font-bold text-2xl">StackAudit</h1>
+              <p className="text-zinc-500 text-sm">AI spend dashboard</p>
             </div>
           </div>
           <Link href="/audit">
-            <button style={S.btn}><Plus size={14} /> New audit</button>
+            <button className="flex items-center gap-2 bg-white text-black px-5 py-2.5 rounded-full font-semibold text-sm hover:bg-zinc-200 transition-all">
+              <Plus size={14} /> New audit
+            </button>
           </Link>
         </div>
 
         {/* ── SUMMARY METRICS ── */}
         {allAudits.length > 0 && (
-          <div style={{ display: "grid", gridTemplateColumns: "repeat(auto-fit, minmax(200px, 1fr))", gap: 12 }}>
-            <div style={{ ...S.statCard, gridColumn: "span 2" }}>
-              <p style={{ color: "#71717a", fontSize: 13, margin: "0 0 8px" }}>Total savings identified</p>
-              <p style={{ fontSize: 36, fontWeight: 800, color: "#16a34a", margin: 0 }}>
-                ${fmt(totalSavings)}<span style={{ fontSize: 18, fontWeight: 400, color: "#a1a1aa" }}>/mo</span>
+          <div className="grid grid-cols-2 md:grid-cols-4 gap-3">
+
+            {/* Total savings */}
+            <div className="col-span-2 rounded-2xl border border-zinc-800 bg-zinc-900 p-6">
+              <p className="text-zinc-400 text-sm">Total savings identified</p>
+              <p className="text-green-400 text-4xl font-bold mt-2">
+                ${fmt(totalSavings)}
+                <span className="text-xl text-zinc-600 font-normal">/mo</span>
               </p>
-              <p style={{ color: "#71717a", fontSize: 12, margin: "4px 0 0" }}>
-                ${fmt(totalAnnual)}/yr across {allAudits.length} audit{allAudits.length !== 1 ? "s" : ""}
+              <p className="text-zinc-500 text-xs mt-1">
+                ${fmt(totalAnnual)}/yr · {allAudits.length} audit{allAudits.length !== 1 ? "s" : ""}
               </p>
             </div>
 
-            <div style={S.statCard}>
-              <p style={{ color: "#71717a", fontSize: 13, margin: "0 0 8px" }}>Avg waste score</p>
-              <p style={{ fontSize: 36, fontWeight: 800, color: wasteColor(avgWaste), margin: 0 }}>{avgWaste}%</p>
-              <div style={{ height: 6, background: "#e4e4e7", borderRadius: 99, marginTop: 10, overflow: "hidden" }}>
-                <div style={{ width: `${avgWaste}%`, height: "100%", background: wasteBg(avgWaste), borderRadius: 99 }} />
+            {/* Avg waste */}
+            <div className="rounded-2xl border border-zinc-800 bg-zinc-900 p-6">
+              <p className="text-zinc-400 text-sm">Avg waste</p>
+              <p className={`text-4xl font-bold mt-2 ${wasteTextColor(avgWaste)}`}>
+                {avgWaste}%
+              </p>
+              <div className="mt-3 h-1.5 bg-zinc-800 rounded-full overflow-hidden">
+                <div
+                  className={`h-1.5 rounded-full ${wasteBgColor(avgWaste)}`}
+                  style={{ width: `${avgWaste}%` }}
+                />
               </div>
             </div>
 
-            <div style={S.statCard}>
-              <p style={{ color: "#71717a", fontSize: 13, margin: "0 0 12px" }}>Audit status</p>
-              {[
-                { label: "⚠ High savings", count: highSavingsCount, color: "#dc2626" },
-                { label: "✓ Optimized", count: optimizedCount, color: "#16a34a" },
-                { label: "# Total", count: allAudits.length, color: "#18181b" },
-              ].map((s) => (
-                <div key={s.label} style={{ display: "flex", justifyContent: "space-between", marginBottom: 8, fontSize: 13 }}>
-                  <span style={{ color: s.color }}>{s.label}</span>
-                  <span style={{ fontWeight: 700, color: "#18181b" }}>{s.count}</span>
+            {/* Status */}
+            <div className="rounded-2xl border border-zinc-800 bg-zinc-900 p-6">
+              <p className="text-zinc-400 text-sm mb-3">Status</p>
+              <div className="space-y-2">
+                <div className="flex justify-between text-sm">
+                  <span className="text-red-400">⚠ High savings</span>
+                  <span className="text-white font-bold">{highSavingsCount}</span>
                 </div>
-              ))}
+                <div className="flex justify-between text-sm">
+                  <span className="text-green-400">✓ Optimized</span>
+                  <span className="text-white font-bold">{optimizedCount}</span>
+                </div>
+                <div className="flex justify-between text-sm">
+                  <span className="text-zinc-400">∑ Total</span>
+                  <span className="text-white font-bold">{allAudits.length}</span>
+                </div>
+              </div>
             </div>
+
           </div>
         )}
 
         {/* ── CREDEX BANNER ── */}
         {highSavingsCount > 0 && (
-          <div style={{ background: "#eef2ff", border: "2px solid #c7d2fe", borderRadius: 16, padding: "16px 20px", display: "flex", alignItems: "center", justifyContent: "space-between", flexWrap: "wrap", gap: 12 }}>
-            <div style={{ display: "flex", alignItems: "center", gap: 12 }}>
-              <BadgeDollarSign size={20} color="#6366f1" />
+          <div className="rounded-2xl border border-indigo-500/30 bg-indigo-950/40 p-5 flex items-center justify-between flex-wrap gap-4">
+            <div className="flex items-center gap-3">
+              <BadgeDollarSign size={20} className="text-indigo-400 shrink-0" />
               <div>
-                <p style={{ fontWeight: 600, fontSize: 14, color: "#3730a3", margin: 0 }}>
+                <p className="text-white font-semibold text-sm">
                   {highSavingsCount} audit{highSavingsCount !== 1 ? "s" : ""} qualify for Credex credits
                 </p>
-                <p style={{ color: "#6366f1", fontSize: 12, margin: "2px 0 0" }}>
-                  Discounted AI infrastructure credits — often 20–40% below retail.
+                <p className="text-zinc-400 text-xs mt-0.5">
+                  Discounted AI credits — often 20–40% below retail.
                 </p>
               </div>
             </div>
-            <a href="https://credex.rocks" target="_blank" rel="noopener noreferrer"
-              style={{ display: "flex", alignItems: "center", gap: 6, background: "#6366f1", color: "white", borderRadius: 99, padding: "8px 16px", fontSize: 12, fontWeight: 600, textDecoration: "none" }}>
+            <a
+              href="https://credex.rocks"
+              target="_blank"
+              rel="noopener noreferrer"
+              className="flex items-center gap-2 bg-indigo-500 hover:bg-indigo-400 text-white px-4 py-2 rounded-full text-xs font-semibold transition-all shrink-0"
+            >
               Book consultation <ArrowRight size={12} />
             </a>
           </div>
@@ -469,28 +440,26 @@ export default function DashboardPage() {
 
         {/* ── AUDIT LIST ── */}
         <div>
-          <div style={{ display: "flex", alignItems: "center", justifyContent: "space-between", marginBottom: 16 }}>
-            <h2 style={S.sectionTitle}>
-              <TrendingDown size={16} color="#71717a" />
+          <div className="flex items-center mb-4">
+            <h2 className="text-white font-bold text-lg flex items-center gap-2">
+              <TrendingDown size={16} className="text-zinc-500" />
               Recent audits
-              {allAudits.length > 0 && (
-                <span style={{ color: "#a1a1aa", fontWeight: 400, fontSize: 14 }}>
-                  — {Math.min(visibleCount, allAudits.length)} of {allAudits.length}
-                </span>
-              )}
+              <span className="text-zinc-600 font-normal text-sm">
+                — {Math.min(visibleCount, allAudits.length)} of {allAudits.length}
+              </span>
             </h2>
           </div>
 
           {loading ? (
-            <div style={{ display: "flex", justifyContent: "center", padding: "80px 0" }}>
-              <Loader2 size={24} className="animate-spin" color="#a1a1aa" />
+            <div className="flex justify-center py-20">
+              <Loader2 size={24} className="animate-spin text-zinc-600" />
             </div>
           ) : allAudits.length === 0 ? (
             <EmptyState />
           ) : (
             <>
-              {/* Vertical list — full width, always visible */}
-              <div style={{ display: "flex", flexDirection: "column", gap: 12 }}>
+              {/* Vertical list — full width, one per row */}
+              <div className="flex flex-col gap-3">
                 {visibleAudits.map((audit, i) => (
                   <AuditCard
                     key={audit.id}
@@ -503,31 +472,37 @@ export default function DashboardPage() {
                 ))}
               </div>
 
-              {/* Load more */}
+              {/* ── LOAD MORE ── */}
               {hasMore && (
-                <div style={{ display: "flex", flexDirection: "column", alignItems: "center", gap: 12, marginTop: 24 }}>
+                <div className="flex flex-col items-center gap-3 mt-6">
                   <button
                     onClick={handleLoadMore}
                     disabled={loadingMore}
-                    style={{ ...S.btnOutline, opacity: loadingMore ? 0.5 : 1 }}
+                    className="flex items-center gap-2 px-6 py-3 rounded-full border border-zinc-700 text-zinc-400 hover:text-white hover:border-zinc-500 disabled:opacity-50 transition-all text-sm"
                   >
-                    {loadingMore
-                      ? <><Loader2 size={14} className="animate-spin" /> Loading...</>
-                      : <><ChevronDown size={14} /> Load {Math.min(PAGE_SIZE, remaining)} more <span style={{ color: "#a1a1aa", fontSize: 12 }}>({remaining} left)</span></>
-                    }
+                    {loadingMore ? (
+                      <><Loader2 size={14} className="animate-spin" /> Loading...</>
+                    ) : (
+                      <>
+                        <ChevronDown size={14} />
+                        Load {Math.min(PAGE_SIZE, remaining)} more
+                        <span className="text-zinc-600 text-xs">({remaining} left)</span>
+                      </>
+                    )}
                   </button>
 
                   {/* Progress dots */}
-                  <div style={{ display: "flex", gap: 6, alignItems: "center" }}>
+                  <div className="flex items-center gap-1.5">
                     {allAudits.map((_, i) => (
-                      <div key={i} style={{
-                        height: 6, borderRadius: 99, transition: "all 0.3s",
-                        width: i < visibleCount ? 16 : 6,
-                        background: i < visibleCount ? "#18181b" : "#d4d4d8",
-                      }} />
+                      <div
+                        key={i}
+                        className={`rounded-full transition-all duration-300 h-1.5 ${
+                          i < visibleCount ? "bg-white w-4" : "bg-zinc-700 w-1.5"
+                        }`}
+                      />
                     ))}
                   </div>
-                  <span style={{ color: "#a1a1aa", fontSize: 12 }}>
+                  <span className="text-zinc-600 text-xs">
                     {Math.min(visibleCount, allAudits.length)} / {allAudits.length}
                   </span>
                 </div>
@@ -535,13 +510,13 @@ export default function DashboardPage() {
 
               {/* All loaded */}
               {!hasMore && allAudits.length > PAGE_SIZE && (
-                <div style={{ display: "flex", flexDirection: "column", alignItems: "center", gap: 6, marginTop: 24 }}>
-                  <div style={{ display: "flex", alignItems: "center", gap: 6, color: "#a1a1aa", fontSize: 12 }}>
+                <div className="flex flex-col items-center gap-2 mt-6">
+                  <div className="flex items-center gap-2 text-zinc-600 text-xs">
                     <CheckCircle2 size={14} /> All {allAudits.length} audits loaded
                   </div>
                   <button
                     onClick={() => window.scrollTo({ top: 0, behavior: "smooth" })}
-                    style={{ ...S.btnOutline, fontSize: 12, padding: "6px 14px" }}
+                    className="flex items-center gap-1.5 text-zinc-600 hover:text-zinc-400 text-xs transition-colors border border-zinc-800 px-3 py-1.5 rounded-full"
                   >
                     <ChevronUp size={12} /> Back to top
                   </button>
@@ -551,10 +526,12 @@ export default function DashboardPage() {
           )}
         </div>
 
-        {/* Footer */}
-        <div style={{ borderTop: "1px solid #e4e4e7", paddingTop: 24, display: "flex", justifyContent: "space-between", fontSize: 12, color: "#a1a1aa" }}>
+        {/* ── FOOTER ── */}
+        <div className="border-t border-zinc-800 pt-6 flex justify-between text-xs text-zinc-600">
           <span>StackAudit by Credex</span>
-          <Link href="/audit" style={{ color: "#a1a1aa", textDecoration: "none" }}>Run another audit →</Link>
+          <Link href="/audit" className="hover:text-zinc-400 transition-colors">
+            Run another audit →
+          </Link>
         </div>
 
       </div>
