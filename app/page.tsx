@@ -199,7 +199,7 @@ export default function Home() {
             transition={{ duration: 0.6, delay: 0.3 }}
             className="flex items-center justify-center gap-4 flex-wrap"
           >
-            <Link href="/audit">
+            <Link href="/login">
               <button className="flex items-center gap-2 bg-white text-black px-7 py-3.5 rounded-full font-bold text-base hover:bg-zinc-100 transition-all shadow-lg shadow-white/10 hover:shadow-white/20 hover:scale-[1.02]">
                 Audit my stack — it's free
                 <ArrowRight size={16} />
