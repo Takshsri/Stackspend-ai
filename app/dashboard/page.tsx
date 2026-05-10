@@ -10,6 +10,7 @@ import {
   CheckCircle2, ChevronDown, ChevronUp,
 } from "lucide-react";
 import type { FullAuditResult } from "@/app/services/audit-engine";
+import { useAuthGuard } from "@/lib/useAuthGuard";
 
 // ─── TYPES ────────────────────────────────────────────────────────────────────
 
@@ -224,6 +225,7 @@ function EmptyState() {
 // ─── MAIN PAGE ────────────────────────────────────────────────────────────────
 
 export default function DashboardPage() {
+  useAuthGuard();
   const [allAudits, setAllAudits] = useState<AuditRow[]>([]);
   const [visibleCount, setVisibleCount] = useState(PAGE_SIZE);
   const [loading, setLoading] = useState(true);

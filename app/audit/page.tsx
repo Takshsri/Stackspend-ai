@@ -21,6 +21,7 @@ import {
   Shuffle,
 } from "lucide-react";
 import { runFullAudit, type AuditInput, type ToolId, type UseCase } from "@/app/services/audit-engine";
+import { useAuthGuard } from "@/lib/useAuthGuard";
 
 // ─── CONSTANTS ────────────────────────────────────────────────────────────────
 
@@ -156,6 +157,7 @@ const STORAGE_KEY = "stackaudit_form_data";
 // ─── COMPONENT ────────────────────────────────────────────────────────────────
 
 export default function AuditPage() {
+  useAuthGuard();
   const router = useRouter();
   const [currentStep, setCurrentStep] = useState(0);
   const [loading, setLoading] = useState(false);
