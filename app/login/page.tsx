@@ -72,9 +72,8 @@ export default function LoginPage() {
           return;
         }
 
-        // Redirect back to where they came from, or /dashboard by default
-        const redirectTo = searchParams.get("redirectTo") ?? "/dashboard";
-        router.push(redirectTo);
+      router.refresh();
+      router.push("/dashboard");
 
       } else {
         const { error } = await supabase.auth.signUp({
