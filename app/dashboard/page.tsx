@@ -58,14 +58,14 @@ function wasteBg(score: number) {
 const S = {
   page: {
     minHeight: "100vh",
-    backgroundColor: "#f4f4f5",   // always light-grey page bg
-    color: "#18181b",
+    background: "var(--background)",
+    color: "var(--foreground)",
   } as React.CSSProperties,
 
   // Dark mode override applied via className="dark" on html element
   card: {
-    background: "#ffffff",
-    border: "2px solid #e4e4e7",
+    background: "var(--card)",
+    border: "1px solid var(--border)",
     borderRadius: 16,
     overflow: "hidden",
   } as React.CSSProperties,
@@ -74,34 +74,34 @@ const S = {
     border: "2px solid #a1a1aa",
   } as React.CSSProperties,
 
-  cardHeader: {
-    padding: "16px 20px",
-    borderBottom: "1px solid #e4e4e7",
-    display: "flex",
-    alignItems: "center",
-    justifyContent: "space-between",
-    gap: 12,
-    flexWrap: "wrap" as const,
-    background: "#fafafa",
-  } as React.CSSProperties,
+cardHeader: {
+  padding: "16px 20px",
+  borderBottom: "1px solid var(--border)",
+  display: "flex",
+  alignItems: "center",
+  justifyContent: "space-between",
+  gap: 12,
+  flexWrap: "wrap" as const,
+  background: "var(--muted)",
+} as React.CSSProperties,
 
   cardBody: {
-    padding: "16px 20px",
-    display: "flex",
-    gap: 16,
-    flexWrap: "wrap" as const,
-    alignItems: "center",
-    background: "#ffffff",
-  } as React.CSSProperties,
+  padding: "16px 20px",
+  display: "flex",
+  gap: 16,
+  flexWrap: "wrap" as const,
+  alignItems: "center",
+  background: "var(--card)",
+} as React.CSSProperties,
 
   pill: {
-    background: "#f1f5f9",
-    borderRadius: 12,
-    padding: "10px 14px",
-    minWidth: 80,
-    textAlign: "center" as const,
-    border: "1px solid #e2e8f0",
-  } as React.CSSProperties,
+  background: "var(--muted)",
+  borderRadius: 12,
+  padding: "10px 14px",
+  minWidth: 80,
+  textAlign: "center" as const,
+  border: "1px solid var(--border)",
+} as React.CSSProperties,
 
   pillLabel: {
     fontSize: 11,
@@ -115,21 +115,21 @@ const S = {
   } as React.CSSProperties,
 
   sectionTitle: {
-    fontSize: 17,
-    fontWeight: 700,
-    color: "#18181b",
-    display: "flex",
-    alignItems: "center",
-    gap: 8,
-    margin: 0,
-  } as React.CSSProperties,
+  fontSize: 17,
+  fontWeight: 700,
+  color: "var(--foreground)",
+  display: "flex",
+  alignItems: "center",
+  gap: 8,
+  margin: 0,
+} as React.CSSProperties,
 
   statCard: {
-    background: "#ffffff",
-    border: "2px solid #e4e4e7",
-    borderRadius: 16,
-    padding: "20px 24px",
-  } as React.CSSProperties,
+  background: "var(--card)",
+  border: "1px solid var(--border)",
+  borderRadius: 16,
+  padding: "20px 24px",
+} as React.CSSProperties,
 
   btn: {
     display: "flex",
