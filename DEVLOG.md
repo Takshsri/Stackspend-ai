@@ -106,5 +106,6 @@ browser client migration.
 
 **Plan for tomorrow:**
 Build /api/summary Anthropic API route, shareable /audit/[id] public page, Open Graph
-tags, complete GTM.md/ECONOMICS.md/LANDING_COPY.md/METRICS.md, deploy to Vercel,
-run Lighthouse audit.
+tags 
+
+
