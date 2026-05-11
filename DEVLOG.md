@@ -108,4 +108,27 @@ browser client migration.
 Build /api/summary Anthropic API route, shareable /audit/[id] public page, Open Graph
 tags 
 
+Day 5 — 2026-05-11
+
+Hours worked: 7
+
+What I did:
+Improved the authentication and dashboard experience across the StackAudit platform. Fixed the Supabase login and signup workflow by separating authentication logic correctly and resolving invalid credential issues during registration. Added protected route handling using a reusable useAuthGuard hook to ensure only authenticated users can access the dashboard and audit pages.
+
+Enhanced dashboard security by connecting audits with authenticated users through user_id storage in Supabase. Updated database queries so users can only view their own audit history and results instead of seeing all audits globally.
+
+Added several UI and UX improvements including animated loading states, reusable spinners, smoother page transitions, and a custom animated 404 page using Framer Motion. Improved dashboard loading behavior, navigation flow, and authentication redirects to make the application feel more polished and production-ready.
+
+Also integrated Framer Motion animations across multiple pages and refined responsive behavior and interaction feedback throughout the platform.
+
+What I learned:
+Learned how Supabase session persistence works with the Next.js App Router and how to implement client-side protected routes using reusable authentication guards. Explored how to build user-specific SaaS dashboards using authenticated database filtering.
+
+Also learned how loading states, animations, and error handling significantly improve frontend user experience in modern SaaS applications.
+
+Blockers / what I'm stuck on:
+Still refining how to fully prevent brief protected-page flashes before redirects occur. Public shareable audit pages and AI-generated summaries are planned but not implemented yet.
+
+Plan for tomorrow:
+Build shareable public audit pages, implement AI-generated audit summaries through an API route, improve SEO/Open Graph metadata, and finalize deployment polish and documentation updates.
 
