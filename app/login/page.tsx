@@ -50,58 +50,48 @@ export default function LoginPage() {
   const [errorMessage, setErrorMessage] = useState("");
   const [isLogin, setIsLogin] = useState(true);
 
-  const handleAction = async (type: "login" | "signup") => {
-    const { error } = await supabase.auth.signInWithPassword({ email, password });
-    if (error) { setErrorMessage(error.message); return; }
+const handleAction = async (type: "login" | "signup") => {
+  setLoading(true);
+  setErrorMessage("");
 
-    router.refresh();  // ← add this line
-    const redirectTo = searchParams.get("redirectTo") ?? "/dashboard";
-    router.push(redirectTo);
-    setLoading(true);
-    setErrorMessage("");
+  try {
+    if (type === "login") {
+      const { error } = await supabase.auth.signInWithPassword({
+        email,
+        password,
+      });
 
-    try {
-      if (type === "login") {
-        const { error } = await supabase.auth.signInWithPassword({
-          email,
-          password,
-        });
-
-        if (error) {
-          setErrorMessage(error.message);
-          return;
-        }
+      if (error) {
+        setErrorMessage(error.message);
+        return;
+      }
 
       router.refresh();
       router.push("/dashboard");
 
-      } else {
-        const { error } = await supabase.auth.signUp({
-          email,
-          password,
-        });
+    } else {
+      const { error } = await supabase.auth.signUp({
+        email,
+        password,
+      });
 
-        if (error) {
-          setErrorMessage(error.message);
-          return;
-        }
-
-        // After signup, Supabase sends a confirmation email by default.
-        // If email confirmation is OFF in your Supabase dashboard,
-        // the user is logged in immediately — redirect them.
-        const redirectTo = searchParams.get("redirectTo") ?? "/dashboard";
-        router.push(redirectTo);
+      if (error) {
+        setErrorMessage(error.message);
+        return;
       }
 
-    } catch (e: unknown) {
-      setErrorMessage(
-        e instanceof Error ? e.message : "An unexpected error occurred"
-      );
-    } finally {
-      setLoading(false);
+      router.refresh();
+      router.push("/dashboard");
     }
-  };
 
+  } catch (e: unknown) {
+    setErrorMessage(
+      e instanceof Error ? e.message : "An unexpected error occurred"
+    );
+  } finally {
+    setLoading(false);
+  }
+};
   const containerVariants = {
     hidden: { opacity: 0 },
     visible: {

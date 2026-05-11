@@ -257,9 +257,10 @@ export default function AuditPage() {
 
       // Generate unique shareable ID
       const shareId = crypto.randomUUID();
-
+      const {data: { user },} = await supabase.auth.getUser();
       // Save to Supabase (strip identifying info for public URL)
       const { error } = await supabase.from("audits").insert({
+        user_id: user?.id,
         share_id: shareId,
         company_name: formData.companyName,
         team_size: formData.teamSize,

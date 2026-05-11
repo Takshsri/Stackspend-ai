@@ -244,10 +244,17 @@ export default function DashboardPage() {
 
   const fetchAudits = async () => {
     setLoading(true);
-    const { data, error } = await supabase
-      .from("audits")
-      .select("id, share_id, company_name, team_size, audit_result, created_at")
-      .order("created_at", { ascending: false });
+    const {
+  data: { user },
+} = await supabase.auth.getUser();
+
+if (!user) return;
+
+const { data, error } = await supabase
+  .from("audits")
+  .select("id, share_id, company_name, team_size, audit_result, created_at")
+  .eq("user_id", user.id)
+  .order("created_at", { ascending: false });
 
     if (error) {
       console.error("Supabase fetch error:", error.message);
