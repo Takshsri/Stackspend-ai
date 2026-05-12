@@ -165,7 +165,7 @@ export default function Home() {
             className="inline-flex items-center gap-2 px-3 py-1.5 rounded-full border border-green-500/30 bg-green-500/10 text-green-400 text-xs font-medium mb-8"
           >
             <Zap size={11} />
-            Free AI spend audit — no login required
+            Free AI spend audit 
           </motion.div>
 
           {/* Headline */}
@@ -220,7 +220,7 @@ export default function Home() {
             className="mt-5 text-zinc-600 text-xs flex items-center justify-center gap-1.5"
           >
             <Shield size={11} />
-            No account needed · Results in 60 seconds · Share with your team
+            Results in 60 seconds · Share with your team
           </motion.p>
         </div>
 
@@ -375,7 +375,7 @@ export default function Home() {
               Credex sells discounted AI infrastructure credits — Cursor, Claude, ChatGPT Enterprise — sourced from companies that overforecast. Teams saving $500+/mo on plan switches can often save an additional 20–40% with credits.
             </p>
             <div className="flex items-center justify-center gap-4 flex-wrap">
-              <Link href="/audit">
+              <Link href="/login">
                 <button className="flex items-center gap-2 bg-white text-black px-6 py-3 rounded-full font-bold text-sm hover:bg-zinc-100 transition-all">
                   Start your audit
                   <ArrowRight size={14} />
@@ -406,7 +406,7 @@ export default function Home() {
           </div>
           <div className="flex items-center gap-6">
             <a href="https://credex.rocks" target="_blank" rel="noopener noreferrer" className="hover:text-zinc-400 transition-colors">credex.rocks</a>
-            <Link href="/audit" className="hover:text-zinc-400 transition-colors">Run audit</Link>
+            <Link href="/login" className="hover:text-zinc-400 transition-colors">Run audit</Link>
             <Link href="/dashboard" className="hover:text-zinc-400 transition-colors">Dashboard</Link>
           </div>
         </div>

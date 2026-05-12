@@ -192,6 +192,7 @@ function AISummaryBlock({ auditResult }: { auditResult: FullAuditResult }) {
           body: JSON.stringify({ auditResult }),
         });
         const json = await res.json();
+        console.log(json);
         setSummary(json.summary ?? getFallbackSummary(auditResult));
       } catch {
         setSummary(getFallbackSummary(auditResult));
