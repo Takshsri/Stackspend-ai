@@ -139,5 +139,12 @@ ECONOMICS files need more specific channel detail and real unit economics math t
 higher. User interviews were conducted with real people which is the non-negotiable
 floor.
 
+## Final Thoughts
+
+This project taught me how real SaaS systems combine product thinking,
+authentication, APIs, databases, UI/UX, deployment, and debugging under
+tight time constraints. The biggest lesson was that building a working
+product is mostly about solving integration problems rather than writing
+isolated features.
 
 
