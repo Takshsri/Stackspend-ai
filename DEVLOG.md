@@ -108,7 +108,7 @@ browser client migration.
 Build /api/summary Anthropic API route, shareable /audit/[id] public page, Open Graph
 tags 
 
-Day 5 — 2026-05-11
+##Day 5 — 2026-05-11
 
 Hours worked: 7
 
@@ -132,3 +132,32 @@ Still refining how to fully prevent brief protected-page flashes before redirect
 Plan for tomorrow:
 Build shareable public audit pages, implement AI-generated audit summaries through an API route, improve SEO/Open Graph metadata, and finalize deployment polish and documentation updates.
 
+# DEVLOG
+
+## Day 6 — 2026-05-12
+
+**Hours worked:** 7
+
+**What I did:**  
+Implemented public shareable audit reports using dynamic routes with the Next.js App Router (`/audit/[id]`). Added server-side data fetching from Supabase for public audit pages and implemented dynamic metadata generation for Open Graph and Twitter previews.
+
+Built a polished public audit report UI with utilization scores, savings breakdowns, recommendation cards, expandable tool analysis sections, summary metrics, and copy-share-link functionality. Added audit result transformation logic to map internal audit-engine output into a frontend-safe public report structure.
+
+Improved authentication flow and route protection using a reusable `useAuthGuard` hook. Fixed dashboard access so only authenticated users can view private dashboards and audits. Updated dashboard queries to prepare for user-specific audit filtering and improved protected route handling across the application.
+
+Added loading states, custom `not-found` pages, animated transitions using Framer Motion, and improved overall UX polish across the dashboard, audit flow, and results pages.
+
+Implemented `/api/summary` API route support and tested POST-based API integration from the frontend. Learned how frontend components communicate with Next.js API routes using fetch requests and dynamic JSON responses.
+
+Fixed multiple TypeScript issues related to dynamic routes, transformed API result typing, optional fields, public audit structures, and mismatched result interfaces between frontend components and Supabase JSON data.
+
+**What I learned:**  
+Learned how dynamic metadata generation works in the Next.js App Router and how server-side rendering interacts with Supabase queries. Explored how public shareable SaaS report systems are structured and how API routes integrate with frontend components using async fetch requests.
+
+Also improved understanding of TypeScript interface transformation patterns, route protection strategies, and client-side authentication behavior with Supabase sessions.
+
+**Blockers / what I'm stuck on:**  
+Spent time debugging mismatched TypeScript types between audit-engine results and frontend report components. Also faced issues with dynamic route params, API testing confusion between GET and POST requests, and data transformation consistency between Supabase and the frontend UI.
+
+**Plan for tomorrow:**  
+Finalize deployment testing, improve dashboard filtering, polish UI responsiveness, complete README and documentation, test all routes and share links, and prepare the final project submission.
