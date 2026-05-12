@@ -2,7 +2,7 @@
 
 import { supabase } from "@/lib/supabase";
 import { useState } from "react";
-import { useRouter, useSearchParams } from "next/navigation";  // ← useSearchParams here
+import { useRouter} from "next/navigation";  // ← useSearchParams here
 import { motion, AnimatePresence } from "framer-motion";
 import {
   Loader2,
@@ -42,7 +42,6 @@ function FeatureItem({
 
 export default function LoginPage() {
   const router = useRouter();
-  const searchParams = useSearchParams();                        // ← fixed: hook not variable
 
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");

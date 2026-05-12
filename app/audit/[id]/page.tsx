@@ -93,18 +93,27 @@ export async function generateMetadata({
   return {
     title,
     description,
-    openGraph: {
-      title,
-      description,
-      url: `${process.env.NEXT_PUBLIC_SITE_URL}/audit/${id}`,
-      siteName: "StackAudit",
-      type: "website",
+  openGraph: {
+  title,
+  description,
+  url: `${process.env.NEXT_PUBLIC_SITE_URL}/audit/${id}`,
+  siteName: "StackAudit",
+  type: "website",
+  images: [
+    {
+      url: `${process.env.NEXT_PUBLIC_SITE_URL}/og-image.png`,
+      width: 1200,
+      height: 630,
+      alt: "StackAudit AI Spend Report",
     },
-    twitter: {
-      card: "summary_large_image",
-      title,
-      description,
-    },
+  ],
+},
+twitter: {
+  card: "summary_large_image",
+  title,
+  description,
+  images: [`${process.env.NEXT_PUBLIC_SITE_URL}/og-image.png`],
+},
   };
 }
 

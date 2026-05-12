@@ -140,3 +140,46 @@ The strategy prioritizes:
 4. Founder-driven organic referrals
 
 Rather than optimizing for traffic volume initially, the focus is on acquiring users who actively pay for multiple AI subscriptions and are likely to share optimization findings publicly.
+
+
+## High-Intent Moments Before Signup
+
+Typical searches or behaviors immediately before someone would use StackSpend AI:
+
+- “Why is our OpenAI bill so high?”
+- “ChatGPT Team vs Enterprise pricing”
+- “How much are startups spending on AI tools?”
+- “Too many AI subscriptions”
+- “Cursor vs Copilot cost”
+- Reviewing company credit-card statements with multiple AI charges
+- Slack conversations like:
+  “Are we actually using all these AI tools?”
+- Founders discussing burn reduction before fundraising
+- Engineering managers reviewing unused seats during budget planning
+
+The ideal user is already feeling pricing fatigue before discovering the product.
+
+## Specific Communities
+
+- r/ChatGPTPro
+- r/SaaS
+- r/startups
+- Cursor Discord
+- Indie Hackers AI discussions
+- OpenAI developer forums
+- YC founder Slack groups
+- AI engineering Twitter/X lists
+- Vercel/Next.js communities where builders discuss AI tooling costs
+
+
+## Week 1 Success Metrics
+
+If the launch resonates, week-1 traction would likely look like:
+
+- 100–200 landing page visitors
+- 25+ completed audits
+- 5+ shared public audit links
+- 3–5 founders posting screenshots publicly
+- At least one Reddit or X/Twitter thread generating inbound traffic
+- 2–3 users asking for additional integrations or advanced reporting
+- 1–2 users willing to pay for recurring monitoring

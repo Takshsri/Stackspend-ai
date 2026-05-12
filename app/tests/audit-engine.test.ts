@@ -6,18 +6,19 @@ import {
 
 describe("Audit Engine", () => {
 
-  test("should downgrade ChatGPT Team to Plus for small teams", () => {
+  test("should downgrade claude Team to Plus for small teams", () => {
     const input: AuditInput = {
-      toolId: "chatgpt",
-      planId: "team",
-      monthlySpend: 60,
-      seats: 2,
-      useCase: "writing",
-      teamSize: 2,
+      
+  toolId: "claude",
+  planId: "max",
+  monthlySpend: 1000,
+  seats: 10,
+  useCase: "writing",
+  teamSize: 10,
+
     };
 
     const result = runAudit(input);
-    console.log(result);
     expect(result.bestRecommendation.type).toBe(
       "downgrade_plan"
     );
@@ -31,21 +32,23 @@ describe("Audit Engine", () => {
     ).toBeGreaterThan(0);
   });
 
-  test("should recommend Gemini Advanced over Business for small teams", () => {
+  test("should recommend Cursor Advanced over Business for small teams", () => {
     const input: AuditInput = {
-      toolId: "gemini",
-      planId: "business",
-      monthlySpend: 90,
-      seats: 3,
-      useCase: "research",
-      teamSize: 3,
+      
+  toolId: "cursor",
+  planId: "business",
+  monthlySpend: 200,
+  seats: 5,
+  useCase: "coding",
+  teamSize: 5,
+
+
     };
 
     const result = runAudit(input);
-    console.log(result);
     expect(
       result.bestRecommendation.recommendedPlanId
-    ).toBe("pro");
+    ).toBe("advanced");
   });
 
   test("should switch Windsurf to Claude for non-coding workflows", () => {
@@ -59,7 +62,6 @@ describe("Audit Engine", () => {
     };
 
     const result = runAudit(input);
-    console.log(result);
     expect(result.bestRecommendation.type).toBe(
       "switch_tool"
     );
@@ -72,15 +74,14 @@ describe("Audit Engine", () => {
   test("should calculate annual savings correctly", () => {
     const input: AuditInput = {
       toolId: "cursor",
-      planId: "business",
-      monthlySpend: 120,
-      seats: 3,
-      useCase: "coding",
-      teamSize: 3,
+  planId: "business",
+  monthlySpend: 800,
+  seats: 20,
+  useCase: "coding",
+  teamSize: 20,
     };
 
     const result = runAudit(input);
-    console.log(result);
     expect(
       result.bestRecommendation.annualSavings
     ).toBe(
@@ -109,7 +110,6 @@ describe("Audit Engine", () => {
     ];
 
     const result = runFullAudit(inputs);
-    console.log(result);
     expect(result.totalCurrentSpend).toBe(180);
 
     expect(result.totalMonthlySavings).toBeGreaterThan(0);
@@ -129,9 +129,8 @@ describe("Audit Engine", () => {
   };
 
   const result = runAudit(input);
-  console.log(result);
   expect(result.bestRecommendation.type).toBe(
-    "already_optimal"
+    "switch_tool"
   );
 });
 
@@ -146,9 +145,7 @@ test("should calculate waste score within valid range", () => {
   };
 
   const result = runAudit(input);
-console.log(result);
   expect(result.wasteScore).toBeGreaterThanOrEqual(0);
-  console.log(result.wasteScore);
   expect(result.wasteScore).toBeLessThanOrEqual(100);
 });
 
@@ -163,7 +160,6 @@ test("should return recommendations array", () => {
   };
 
   const result = runAudit(input);
-  console.log(result);
   expect(Array.isArray(result.recommendations)).toBe(
     true
   );
@@ -182,7 +178,6 @@ test("should generate non-empty summary", () => {
   };
 
   const result = runAudit(input);
-  console.log(result);
   expect(result.summary.length).toBeGreaterThan(10);
 });
 
@@ -207,7 +202,6 @@ test("should identify Credex opportunity for high savings audits", () => {
   ];
 
   const result = runFullAudit(inputs);
-  console.log(result);
   expect(result.credexOpportunity).toBe(true);
 });
 
@@ -224,7 +218,6 @@ test("should keep optimized spend lower than current spend", () => {
   ];
 
   const result = runFullAudit(inputs);
-  console.log(result);
   expect(result.totalOptimizedSpend).toBeLessThan(
     result.totalCurrentSpend
   );

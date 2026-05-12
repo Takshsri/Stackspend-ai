@@ -234,14 +234,6 @@ export default function DashboardPage() {
   const [showScrollTop, setShowScrollTop] = useState(false);
   const prevCount = useRef(PAGE_SIZE);
   const newCardRef = useRef<HTMLDivElement>(null);
-
-  useEffect(() => {
-    fetchAudits();
-    const onScroll = () => setShowScrollTop(window.scrollY > 300);
-    window.addEventListener("scroll", onScroll);
-    return () => window.removeEventListener("scroll", onScroll);
-  }, []);
-
   const fetchAudits = async () => {
     setLoading(true);
     const {
@@ -263,6 +255,14 @@ const { data, error } = await supabase
     }
     setLoading(false);
   };
+  useEffect(() => {
+    fetchAudits();
+    const onScroll = () => setShowScrollTop(window.scrollY > 300);
+    window.addEventListener("scroll", onScroll);
+    return () => window.removeEventListener("scroll", onScroll);
+  }, []);
+
+
 
   // ── Pagination ──────────────────────────────────────────────────────────────
 

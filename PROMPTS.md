@@ -55,6 +55,10 @@ AI hallucinating a price would destroy trust. Knowing when NOT to use AI matters
 
 ---
 
+The summary is informational only and does not generate pricing decisions.
+All savings recommendations come from deterministic audit-engine.ts rules.
+
+
 ## Versioning
 
 | Version | Date | Change |

@@ -1,6 +1,6 @@
 "use client";
 
-import { useEffect, useState, useRef } from "react";
+import { useEffect, useState} from "react";
 import { useSearchParams, useRouter } from "next/navigation";
 import Link from "next/link";
 import { motion, AnimatePresence } from "framer-motion";
@@ -8,7 +8,7 @@ import {
   PieChart,
   TrendingDown,
   CheckCircle2,
-  AlertTriangle,
+
   ArrowRight,
   Share2,
   Copy,

@@ -5,6 +5,25 @@
 StackSpend AI is a SaaS spend audit platform built with Next.js, Supabase, and a planned AI recommendation layer. Users complete a guided audit wizard, and the platform surfaces optimization insights, waste scores, and estimated savings.
 
 ---
+## System Architecture Diagram
+
+```mermaid
+flowchart TD
+
+A[User Opens Audit Wizard] --> B[Next.js Frontend]
+B --> C[Audit Form State]
+C --> D[Rule-based Audit Engine]
+D --> E[Savings Calculation]
+E --> F[AI Summary API]
+F --> G[Claude/OpenAI]
+E --> H[Results Page]
+H --> I[Shareable Public URL]
+
+B --> J[Supabase Auth]
+B --> K[Supabase Database]
+
+K --> L[(audits table)]
+```
 
 ## Tech Stack
 
@@ -200,3 +219,18 @@ Several security practices were considered during architecture planning:
 - Future rate-limiting for AI endpoints
 
 Sensitive API keys are excluded from the repository using environment variables and `.gitignore`.
+
+## Scaling to 10k Audits/Day
+
+If StackSpend AI needed to support 10k+ audits/day, I would introduce:
+
+- Queue-based audit processing using background jobs
+- Redis caching for repeated pricing lookups
+- Database indexing for audit retrieval
+- Rate limiting on AI summary endpoints
+- CDN caching for public audit pages
+- Edge deployment for lower latency
+- Batched analytics processing
+- Separate worker services for AI summary generation
+
+The current MVP architecture prioritizes speed of iteration and product validation over infrastructure complexity.

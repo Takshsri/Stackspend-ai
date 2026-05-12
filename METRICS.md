@@ -145,6 +145,20 @@ The goal is for audit reports themselves to become shareable growth assets that 
 - Weekly metrics email to self (or Slack notification via Supabase webhooks)
 
 ---
+## Key Input Metrics Driving the North Star
+
+The North Star metric ("Audits completed per week") is primarily driven by three upstream metrics:
+
+1. Landing page → signup conversion rate  
+Higher conversion means more users entering the audit funnel.
+
+2. Audit start → audit completion rate  
+The audit flow must feel fast and low-friction.
+
+3. Shareable report usage  
+Shared audit links create organic acquisition and referral loops.
+
+Improving these three metrics should directly increase completed audits and overall product growth.
 
 ## Weekly Check-In Template
 
