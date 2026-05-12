@@ -241,7 +241,7 @@ function ShareButton({ shareId }: { shareId: string }) {
 type Props = {
   shareId: string;
   teamSize: string;
-  result: PublicAuditResult;
+  result: PublicAuditResult & { title?: string };
   createdAt: string;
 };
 
