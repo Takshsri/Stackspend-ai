@@ -5,6 +5,12 @@ StackSpend AI is an AI spend audit platform that helps startups analyze and opti
 The goal of the project is to provide startups and engineering teams with an instant AI cost optimization report while helping them understand how to reduce unnecessary spending.
 
 ---
+![Next.js](https://img.shields.io/badge/Next.js-15-black)
+![TypeScript](https://img.shields.io/badge/TypeScript-blue)
+![Supabase](https://img.shields.io/badge/Supabase-green)
+![Vercel](https://img.shields.io/badge/Deploy-Vercel-black)
+
+Instant AI subscription cost optimization for startups and engineering teams.
 
 # Features
 
@@ -82,29 +88,37 @@ http://localhost:3000
 ```
 
 ---
+# Environment Variables
+
+Create a `.env.local` file:
+
+```env
+NEXT_PUBLIC_SUPABASE_URL=
+NEXT_PUBLIC_SUPABASE_ANON_KEY=
+SUPABASE_SERVICE_ROLE_KEY=
+NEXT_PUBLIC_SITE_URL=
+```
+
 
 # Current Progress
 
-- Project initialized with Next.js and TypeScript
-- Tailwind CSS configured
-- shadcn/ui integrated
-- Initial landing page started
-- Pricing data structure created
-- Audit type definitions added
-
----
+- Landing page completed
+- AI spend audit flow implemented
+- Savings recommendation logic added
+- Shareable audit reports implemented
+- Public audit URLs with Open Graph support
+- Email report flow integrated
+- Responsive UI completed
+- Deployed on Vercel
 
 # Planned Features
 
-- AI spend input form
-- Audit recommendation engine
-- Savings analysis dashboard
-- AI-generated summaries
-- Shareable audit reports
-- Email capture and transactional emails
-- Public report pages
-
----
+- Team-based spend analytics
+- PDF export for audit reports
+- Advanced AI pricing comparison engine
+- Multi-workspace support
+- Subscription renewal reminders
+- Historical spending trends
 
 # Decisions
 
@@ -114,11 +128,29 @@ http://localhost:3000
 4. Keeping the audit engine rule-based instead of AI-generated for financial consistency.
 5. Using Supabase to simplify backend storage and deployment.
 
----
-
 # Deployment
 
-The project will be deployed using Vercel.
+The project is deployed on Vercel for fast global delivery and seamless CI/CD integration.
 
----
+# Links
 
+- Live App: https://stackspend-ai.vercel.app
+- GitHub Repo: https://github.com/Takshsri/Stackspend-ai
+
+
+# Screenshots
+
+| Landing Page | Login Page |
+|---|---|
+| ![](./public/LandingPage.png) | ![](./public/LoginPage.png) |
+
+| Audit Page | Dashboard |
+|---|---|
+| ![](./public/AuditPage.png) | ![](./public/DashboardPage.png) |
+
+| Audit Report | Shared Report |
+|---|---|
+| ![](./public/ReportOfAudit.png) | ![](./public/ReportShare.png) |
+
+
+![StackSpend AI Banner](./public/og-image.png)
